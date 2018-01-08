@@ -1,8 +1,10 @@
 $(document).ready(function(){
+
+
 	var board = {
 		name: 'Kanban Board',
 		addColumn: function(column) {
-			this.$element.append(column$element);
+			this.$element.append(column.$element);
 			initSortable();
 		},
 		$element: $('#board .column-container')
@@ -16,10 +18,9 @@ $(document).ready(function(){
 			connectWith: '.column-card-list',//wybieranie listy wktorej dziala sortowanie
 			placeholder: 'card-placeholder'//trzyma nazwe klasy po najechaniu na puste pole
 		}).disableSelection();//usuwa mozliwosc zaznaczania tekstu
-	}
+	};
 
 
-});
 
 
 	function randomString() {
@@ -37,26 +38,8 @@ $(document).ready(function(){
 		this.id = randomString();
 		this.name = name;
 		this.$element = createColumn();
-	};
 
-	Column.prototype = {
-		addCard: function(card) {
-			this.$element.children('ul').append(card.$element);	
-		},
-		removeColumn: function() {
-			this.$element.remove();
-		},
-		
-	},
-
-	Card.prototype = {
-		removeCard: function(){
-			this.$element.remove();
-		}
-	}
-
-
-		function crateColumn(){
+		function createColumn(){
 			//kod do tworzenia kolumny
 			var $column = $('<div>').addClass('column');
 			var $columnTitle = $('<h2>').addClass('column-title').text(self.name);
@@ -82,34 +65,44 @@ $(document).ready(function(){
 
 			//zwraca stworzona kolumne:
 			return $column;
+			};
 
-			//zdarzenie kliknęcia obsl dodawanie nowej kolumny do tablicy:
-			$('.crate-column')
-			.click(function(){
-				var name = prompt('Enter a column name');
-				var column = new Column(name);
-				board.addColumn(column);
-			});
-		};
+
+	};
+
+	Column.prototype = {
+		addCard: function(card) {
+			this.$element.children('ul').append(card.$element);	
+		},
+		removeColumn: function() {
+			this.$element.remove();
+		},
+		
+	},
+
+
+		//zdarzenie kliknęcia obsl dodawanie nowej kolumny do tablicy:
+		$('.create-column')
+		.click(function(){
+			var name = prompt('Enter a column name');
+			var column = new Column(name);
+			board.addColumn(column);
+		});	
+		
 
 	function Card(description) {
 			var self = this;
 
 			this.id = randomString();
 			this.description = description;
-			this.$element = crateCard();
+			this.$element = createCard();
 
-			function createCard() {
-			//jak zrobic karte???
-		}
-	}
-
-	//tworzenie elementow karty:
+				//tworzenie elementow karty:
 	function createCard() {
 		// tworzy bloki
-		var $card = $('<li').addClass('card');
+		var $card = $('<li>').addClass('card');
 		var $cardDescription = $('<p>').addClass('card-description').text(self.description);
-		var $cardDelate = $('<button>').addCLass('btn-delate').text('x');
+		var $cardDelate = $('<button>').addClass('btn-delate').text('x');
 	
 		//wiaze po kliknieciu eventy:
 		$cardDelate.click(function(){
@@ -117,11 +110,20 @@ $(document).ready(function(){
 		});
 
 		//laczy bloki i zwraca karty:
+		
 		$card.append($cardDelate)
 			 .append($cardDescription);
 
 		return $card;
 	}
+	}
+
+	Card.prototype = {
+		removeCard: function(){
+			this.$element.remove();
+		}
+	}
+
 
 // CREATING COLUMNS
 var todoColumn = new Column('To do');
@@ -140,3 +142,5 @@ var card2 = new Card('Create kanban boards');
 // ADDING CARDS TO COLUMNS
 todoColumn.addCard(card1);
 doingColumn.addCard(card2);
+
+});
