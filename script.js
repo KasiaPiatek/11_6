@@ -54,8 +54,10 @@ $(document).ready(function(){
 
 			//dodawanie tekst po kliknięciu w button:
 			$columnAddCard.click(function(){
-				self.addCard(new Card(prompt("Enter the name of the card")));
-			});
+				var name = prompt("Enter the name of the card");
+				if (name) {
+				self.addCard(new Card(name));
+			}});
 
 			//buduje elementy kolumn:
 			$column.append($columnTitle)
@@ -83,11 +85,13 @@ $(document).ready(function(){
 
 		//zdarzenie kliknęcia obsl dodawanie nowej kolumny do tablicy:
 		$('.create-column')
-		.click(function(){
-			var name = prompt('Enter a column name');
-			var column = new Column(name);
-			board.addColumn(column);
-		});	
+			.click(function(){
+				var name = prompt('Enter a column name');
+				if (name) {
+					var column = new Column(name);
+					board.addColumn(column);
+				}
+		});
 		
 
 	function Card(description) {
@@ -99,11 +103,12 @@ $(document).ready(function(){
 
 				//tworzenie elementow karty:
 	function createCard() {
+	
 		// tworzy bloki
 		var $card = $('<li>').addClass('card');
 		var $cardDescription = $('<p>').addClass('card-description').text(self.description);
 		var $cardDelate = $('<button>').addClass('btn-delate').text('x');
-	
+
 		//wiaze po kliknieciu eventy:
 		$cardDelate.click(function(){
 			self.removeCard();
